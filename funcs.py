@@ -2,6 +2,7 @@
 
 import cv2
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Função que transforma um arquivo válido de imagem dando-lhe um aspecto de desenho rascunhado
 def sketch(file_nm):
@@ -39,7 +40,36 @@ def colored_draw(file_nm):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return out
+    
+def old_photo(file_nm):
+        
+        
+    mean = 0
+    var = 10
+    sigma = var ** 1.2
+    img = cv2.imread(file_nm, cv2.IMREAD_COLOR)
+    gaussian = np.random.normal(mean, sigma, (img.shape))  
 
+    noisy_image = np.zeros(img.shape, np.float32)
+    
+    noisy_image = img + gaussian
+
+    cv2.normalize(noisy_image, noisy_image, 0, 224, cv2.NORM_MINMAX, dtype=-1)
+    noisy_image = noisy_image.astype(np.uint8)
+    
+    saved = cv2.imwrite(f"noisy_{file_nm}", noisy_image)
+    noisy_image_out = noisy_image
+    noisy_image_out = cv2.cvtColor(noisy_image, cv2.COLOR_BGR2RGB)
+    
+
+    
+    plt.imshow(noisy_image_out)
+    plt.show()
+    cv2.waitKey(0)
+    
+    
+    
+    
 if __name__ == "__main__":
-    print(colored_draw("HT.jpg"))
+    print(old_photo("HT.jpg"))
    
