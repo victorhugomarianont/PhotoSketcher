@@ -1,10 +1,12 @@
 import funcs
 import os
+import sys
+import time
 r = True
 command = ""
 def inform_file():
     f = input("informe o arquivo que passará \
-    \n por alteração: (certifique-se de que esteja na raiz do programa)")
+    \n por alteração: (certifique-se de que esteja na raiz do programa)\n")
     if (os.path.isfile(f)):
         return f
     else:
@@ -24,6 +26,8 @@ def menu():
     return 1
 
 def run_app():
+    print("O photosketcher é um estilizador de imagem em fase de teste \
+    \npor favor escolha um estilo que deseja aplicar e prossiga\n")
     while r == True:
         menu()
         command = input("").lower()
@@ -39,9 +43,18 @@ def run_app():
             if f != 0:
                 funcs.colored_draw(f)
         elif command == "3" or command == "foto antiga":
-            pass
+            f = inform_file()
+            print (f)
+            if f != 0:
+                funcs.old_photo(f)
         elif command == "4" or command == "ajuda":
-            pass
+            print("No photosketcher você pode escolher filtros para aplicar \
+            \nem suas imagens! basta escolher uma das opções e colocar uma imagem")
+            print ("valida na pasta raiz\n")
+        elif command =="5" or command == "sair":
+            print("Obrigado por testar")
+            time.sleep(2.5)
+            sys.exit(0)
             
         
     
