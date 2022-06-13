@@ -55,15 +55,21 @@ def old_photo(file_nm):
     noisy_image = img + gaussian
 
     cv2.normalize(noisy_image, noisy_image, 0, 224, cv2.NORM_MINMAX, dtype=-1)
-    noisy_image = noisy_image.astype(np.uint8)
+    old_img = noisy_image
+    old_img = np.array(old_img, dtype=np.float64) # converting to float to prevent loss
+    old_img = cv2.transform(old_img, np.matrix([[0.272, 0.534, 0.131],
+                                    [0.349, 0.686, 0.168],
+                                    [0.393, 0.769, 0.189]])) # multipying image with special sepia matrix
+    old_img[np.where(old_img > 255)] = 255 # normalizing values greater than 255 to 255
+    old_img = old_img.astype(np.uint8)
     
-    saved = cv2.imwrite(f"noisy_{file_nm}", noisy_image)
-    noisy_image_out = noisy_image
-    noisy_image_out = cv2.cvtColor(noisy_image, cv2.COLOR_BGR2RGB)
+    saved = cv2.imwrite(f"OldLook_{file_nm}", old_img)
+    old_img_out = old_img 
+    old_img_out = cv2.cvtColor(old_img, cv2.COLOR_BGR2RGB)
     
 
     
-    plt.imshow(noisy_image_out)
+    plt.imshow(old_img_out)
     plt.show()
     cv2.waitKey(0)
     
